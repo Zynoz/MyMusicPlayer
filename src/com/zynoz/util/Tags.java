@@ -23,9 +23,9 @@ public class Tags {
 
     public static String getField(final Song song, final FieldKey fieldKey) throws TagException {
         if (song != null) {
-            AudioFile audioFile = null;
+            AudioFile audioFile;
             try {
-                audioFile = AudioFileIO.read(new File(song.getSongPath()));
+                audioFile = AudioFileIO.read(new File(String.valueOf(song.getSongPath())));
             } catch (CannotReadException | IOException | org.jaudiotagger.tag.TagException | ReadOnlyFileException | InvalidAudioFrameException e) {
                 throw new TagException(e.getMessage());
             }
@@ -37,9 +37,9 @@ public class Tags {
 
     public static Optional<Image> getCover(final Song song) throws TagException {
         if (song != null) {
-            MP3File mp3File = null;
+            MP3File mp3File;
             try {
-                mp3File = (MP3File) AudioFileIO.read(new File(song.getSongPath()));
+                mp3File = (MP3File) AudioFileIO.read(new File(String.valueOf(song.getSongPath())));
             } catch (CannotReadException | IOException | org.jaudiotagger.tag.TagException | ReadOnlyFileException | InvalidAudioFrameException e) {
                 throw new TagException(e.getMessage());
             }
@@ -65,7 +65,7 @@ public class Tags {
     public static int getDuration(final Song song) throws TagException {
         if (song != null) {
             try {
-                AudioFile audioFile = AudioFileIO.read(new File(song.getSongPath()));
+                AudioFile audioFile = AudioFileIO.read(new File(String.valueOf(song.getSongPath())));
                 return (audioFile.getAudioHeader().getTrackLength());
             } catch (Exception e) {
                 throw new TagException(e.getMessage());
@@ -77,7 +77,7 @@ public class Tags {
     public static boolean set(final Song song, final FieldKey fieldKey, final String string) throws TagException {
         if (song != null) {
             try {
-                AudioFile audioFile = audioFile = AudioFileIO.read(new File(song.getSongPath()));
+                AudioFile audioFile = audioFile = AudioFileIO.read(new File(String.valueOf(song.getSongPath())));
                 audioFile.getTag().setField(fieldKey, string);
                 audioFile.commit();
                 return true;
@@ -93,7 +93,7 @@ public class Tags {
         if (song != null) {
             if (image != null) {
                 try {
-                    AudioFile audioFile = AudioFileIO.read(new File(song.getSongPath()));
+                    AudioFile audioFile = AudioFileIO.read(new File(String.valueOf(song.getSongPath())));
                     Artwork artwork = ArtworkFactory.createArtworkFromFile(image);
                     audioFile.getTag().addField(artwork);
                     audioFile.getTag().setField(artwork);

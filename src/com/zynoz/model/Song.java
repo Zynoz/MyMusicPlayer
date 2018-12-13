@@ -7,7 +7,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import org.jaudiotagger.tag.FieldKey;
 
-import java.net.URI;
+import java.nio.file.Path;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -15,9 +15,9 @@ public class Song {
     private SimpleStringProperty songName;
     private SimpleStringProperty songArtist;
     private SimpleObjectProperty<UUID> songUuid;
-    private SimpleObjectProperty<URI> songPath;
+    private SimpleObjectProperty<Path> songPath;
 
-    public Song(URI songPath) throws SongException {
+    public Song(Path songPath) throws SongException {
         this.songPath = new SimpleObjectProperty<>(songPath);
         try {
             this.songArtist = new SimpleStringProperty(Tags.getField(this, FieldKey.ARTIST));
@@ -64,15 +64,15 @@ public class Song {
         this.songUuid.set(songUuid);
     }
 
-    public URI getSongPath() {
+    public Path getSongPath() {
         return songPath.get();
     }
 
-    public SimpleObjectProperty<URI> songPathProperty() {
+    public SimpleObjectProperty<Path> songPathProperty() {
         return songPath;
     }
 
-    public void setSongPath(URI songPath) {
+    public void setSongPath(Path songPath) {
         this.songPath.set(songPath);
     }
 
