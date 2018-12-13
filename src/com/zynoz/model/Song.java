@@ -1,8 +1,11 @@
 package com.zynoz.model;
 
+import com.zynoz.exception.SongException;
+import com.zynoz.exception.TagException;
 import com.zynoz.util.Tags;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import org.jaudiotagger.tag.FieldKey;
 
 import java.net.URI;
 import java.util.Objects;
@@ -14,10 +17,14 @@ public class Song {
     private SimpleObjectProperty<UUID> songUuid;
     private SimpleObjectProperty<URI> songPath;
 
-    public Song(URI songPath) {
+    public Song(URI songPath) throws SongException {
         this.songPath = new SimpleObjectProperty<>(songPath);
-        this.songArtist = new SimpleStringProperty(Tags.getArtist(this));
-        this.songName = new SimpleStringProperty(Tags.getTitle(this));
+        try {
+            this.songArtist = new SimpleStringProperty(Tags.getField(this, FieldKey.ARTIST));
+            this.songName = new SimpleStringProperty(Tags.getField(this, FieldKey.TITLE));
+        } catch (TagException e) {
+            throw new SongException(e.getClass() + ": " + e.getMessage());
+        }
         this.songUuid = new SimpleObjectProperty<>(UUID.randomUUID());
     }
 
