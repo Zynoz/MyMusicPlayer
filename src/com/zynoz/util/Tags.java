@@ -49,6 +49,19 @@ public class Tags {
             throw new TagException("Song is null.");
         }
     }
+
+    public static int getDuration(final Song song) throws TagException {
+        if (song != null) {
+            try {
+                AudioFile audioFile = AudioFileIO.read(new File(song.getSongPath()));
+                return (audioFile.getAudioHeader().getTrackLength());
+            } catch (Exception e) {
+                throw new TagException(e.getMessage());
+            }
+        } else {
+            throw new TagException("Song is null.");
+        }
+    }
     public static boolean set(final Song song, final FieldKey fieldKey, final String string) throws TagException {
         if (song != null) {
             try {
