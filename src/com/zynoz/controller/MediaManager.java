@@ -1,8 +1,6 @@
 package com.zynoz.controller;
 
 import com.zynoz.Main;
-import com.zynoz.exception.MediaManagerException;
-import com.zynoz.exception.SongException;
 import com.zynoz.exception.TagException;
 import com.zynoz.model.Song;
 import com.zynoz.util.Tags;
@@ -18,40 +16,31 @@ import java.util.List;
 public class MediaManager {
     private static MediaManager instance;
 
-    private MediaPlayer mediaPlayer;
     private ObservableList<Song> songs;
     private List<String> mp3paths = new ArrayList<>();
 
-    private MediaManager() throws SongException {
+    private MediaManager() {
         songs = FXCollections.observableArrayList();
         getMp3s(new File(Util.mediaDirectory));
         addMp3s(mp3paths);
-        mediaPlayer = MediaPlayer.getInstance();
     }
 
-    public static synchronized MediaManager getInstance() throws SongException {
+    public static synchronized MediaManager getInstance() {
         if (instance == null) {
             instance = new MediaManager();
         }
         return instance;
     }
 
-    public MediaPlayer getMediaPlayer() {
-        return mediaPlayer;
-    }
 
     public void reload() {
         mp3paths.clear();
         songs.clear();
         getMp3s(new File(Util.mediaDirectory));
-        try {
-            addMp3s(mp3paths);
-        } catch (SongException e) {
-            Main.alert(e.getCause().toString(), e.getMessage());
-        }
+        addMp3s(mp3paths);
     }
 
-    private void addMp3s(final List<String> mp3paths) throws SongException {
+    private void addMp3s(final List<String> mp3paths) {
         for (String s : mp3paths) {
             songs.add(new Song(s));
         }
@@ -79,19 +68,21 @@ public class MediaManager {
         return songs;
     }
 
-    public boolean editSong(final Song song, final FieldKey fieldKey, final String title) throws MediaManagerException {
+    public boolean editSong(final Song song, final FieldKey fieldKey, final String title) {
         try {
             return Tags.set(song, fieldKey, title);
-        } catch (TagException e) {
-            throw new MediaManagerException(e.getCause() + ": " + e.getMessage());
+        } catch (Exception e) {
+            Main.alert(e.getCause().toString(), e.getMessage());
+            return false;
         }
     }
 
-    public boolean editSongCover(final Song song, final File image) throws MediaManagerException {
+    public boolean editSongCover(final Song song, final File image) {
         try {
             return Tags.setCover(song, image);
         } catch (TagException e) {
-            throw new MediaManagerException(e.getClass() + ": " + e.getMessage());
+            Main.alert(e.getCause().toString(), e.getMessage());
+            return false;
         }
     }
 
@@ -106,9 +97,5 @@ public class MediaManager {
 
     public boolean addSong(final Song song) {
         return songs.add(song);
-    }
-
-    public void playSong(Song song) {
-        mediaPlayer.playSong(song);
     }
 }

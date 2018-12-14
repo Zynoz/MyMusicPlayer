@@ -72,6 +72,7 @@ public class Tags {
         if (song != null) {
             try {
                 AudioFile audioFile = AudioFileIO.read(new File(String.valueOf(song.getSongPath())));
+
                 return (audioFile.getAudioHeader().getTrackLength());
             } catch (Exception e) {
                 Main.alert(e.getCause().toString(), e.getMessage());

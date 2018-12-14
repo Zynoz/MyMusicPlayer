@@ -1,9 +1,9 @@
 package com.zynoz.views;
 
 import com.zynoz.controller.MediaAPI;
-import com.zynoz.controller.MediaManager;
 import com.zynoz.model.Song;
 import javafx.application.Platform;
+import javafx.geometry.Pos;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -16,15 +16,16 @@ public class RootBorderPane extends BorderPane {
     private MenuItem miReload, miExit;
     private SongOverview songOverview;
     private SongDetails songDetails;
+    private BottomPane bottomPane;
+    private RightGridPane rightGridPane;
 
     private MediaAPI mediaAPI;
 
-    public RootBorderPane(MediaManager mediaManager) {
+    public RootBorderPane() {
+        mediaAPI = MediaAPI.getInstance();
         initComponents();
         addComponents();
         addListeners();
-        setVis(true);
-        mediaAPI = new MediaAPI(mediaManager);
     }
 
     private void initComponents() {
@@ -37,41 +38,43 @@ public class RootBorderPane extends BorderPane {
         miReload = new MenuItem("Reload songs");
         miExit = new MenuItem("Exit");
 
-        songOverview = new SongOverview(this);
-        songDetails = new SongDetails(this);
+        songOverview = new SongOverview(this, mediaAPI);
+        songDetails = new SongDetails(this, mediaAPI);
+        bottomPane = new BottomPane(this, mediaAPI);
+        rightGridPane = new RightGridPane(this, mediaAPI);
     }
 
     private void addComponents() {
         mFile.getItems().addAll(miReload, new SeparatorMenuItem(), miExit);
-
         menuBar.getMenus().addAll(mFile, mEdit, mHelp);
 
         setTop(menuBar);
         setLeft(songOverview);
         setCenter(songDetails);
+        setBottom(bottomPane);
+        setRight(rightGridPane);
+        BorderPane.setAlignment(bottomPane, Pos.CENTER);
+        songOverview.setSongs();
     }
 
     private void addListeners() {
         miExit.setOnAction(event -> Platform.exit());
         miReload.setOnAction(event -> {
             mediaAPI.reload();
-            songOverview.setSongs(mediaAPI.getSongs());
+            songOverview.setSongs();
         });
-    }
-
-    private void setVis(boolean visible) {
-        songOverview.setVisible(visible);
     }
 
     public SongOverview getSongOverview() {
         return songOverview;
     }
 
-    public MediaAPI getMediaAPI() {
-        return mediaAPI;
-    }
-
     public void setSongDetails(Song song) {
         songDetails.setSong(song);
+    }
+
+
+    public void setSongInfos(Song selectedItem) {
+        rightGridPane.setSong(selectedItem);
     }
 }

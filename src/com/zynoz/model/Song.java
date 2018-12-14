@@ -1,6 +1,6 @@
 package com.zynoz.model;
 
-import com.zynoz.exception.SongException;
+import com.zynoz.Main;
 import com.zynoz.exception.TagException;
 import com.zynoz.util.Tags;
 import javafx.beans.property.SimpleObjectProperty;
@@ -16,13 +16,13 @@ public class Song {
     private SimpleObjectProperty<UUID> songUuid;
     private SimpleStringProperty songPath;
 
-    public Song(String songPath) throws SongException {
+    public Song(String songPath) {
         this.songPath = new SimpleStringProperty(songPath);
         try {
             this.songArtist = new SimpleStringProperty(Tags.getField(this, FieldKey.ARTIST));
             this.songName = new SimpleStringProperty(Tags.getField(this, FieldKey.TITLE));
         } catch (TagException e) {
-            throw new SongException(e.getClass() + ": " + e.getMessage());
+            Main.alert(e.getClass().toString(),e.getMessage());
         }
         this.songUuid = new SimpleObjectProperty<>(UUID.randomUUID());
     }

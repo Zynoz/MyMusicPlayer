@@ -1,6 +1,5 @@
 package com.zynoz;
 
-import com.zynoz.controller.MediaManager;
 import com.zynoz.views.RootBorderPane;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -18,11 +17,11 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        MediaManager mediaManager = MediaManager.getInstance();
-        RootBorderPane rootBorderPane = new RootBorderPane(mediaManager);
+    public void start(Stage primaryStage)  {
+        RootBorderPane rootBorderPane = new RootBorderPane();
+        //rootBorderPane.getStylesheets().add(String.valueOf(getClass().getResource("../resources/css/stylesheet.css")));
 
-        Scene scene = new Scene(rootBorderPane, 500, 300);
+        Scene scene = new Scene(rootBorderPane, 900, 600);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

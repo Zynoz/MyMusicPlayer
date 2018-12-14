@@ -1,14 +1,13 @@
 package com.zynoz.util;
 
 import com.zynoz.exception.CommonException;
-import com.zynoz.exception.SongException;
-import com.zynoz.model.Song;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.Random;
 
 public class Util {
     private static Util instance;
@@ -29,9 +28,9 @@ public class Util {
         return instance;
     }
 
-    public Song getRandomSong() throws SongException {
-        //TODO
-        return new Song("");
+    public static int  getRandomeSong(int size) {
+        Random random = new Random();
+        return random.nextInt(size - 1);
     }
 
     public void createProperties() throws CommonException {

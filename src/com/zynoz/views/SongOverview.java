@@ -1,27 +1,53 @@
 package com.zynoz.views;
 
+import com.zynoz.controller.MediaAPI;
 import com.zynoz.model.Song;
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseButton;
+import org.jaudiotagger.tag.FieldKey;
 
 
 public class SongOverview extends TableView<Song> {
     private TableColumn<Song, String> title, artist;
 
     private Song songToPlay;
+    private MediaAPI mediaAPI;
     private RootBorderPane rootBorderPane;
 
-    public SongOverview(RootBorderPane rootBorderPane) {
+    private ContextMenu contextMenu;
+    private MenuItem miPlay, miEdit, miRemove, miDelete;
+
+    public SongOverview(RootBorderPane rootBorderPane, MediaAPI mediaAPI) {
+        this.mediaAPI = mediaAPI;
+        this.rootBorderPane = rootBorderPane;
         initComponents();
         addComponents();
         setFactories();
         setupListeners();
-        this.rootBorderPane = rootBorderPane;
         title.setResizable(true);
         artist.setResizable(true);
+    }
+
+    private void initComponents() {
+        title = new TableColumn<>("Title");
+        artist = new TableColumn<>("Arist");
+        contextMenu = new ContextMenu();
+        miPlay = new MenuItem("Play");
+        miEdit = new MenuItem("Edit");
+        miRemove = new MenuItem("Remove");
+        miDelete = new MenuItem("Delete");
+    }
+
+    private void addComponents() {
+        //noinspection unchecked
+        getColumns().addAll(title, artist);
+        contextMenu.getItems().addAll(miPlay, miEdit, miRemove, miDelete);
+        setContextMenu(contextMenu);
     }
 
     private void setupListeners() {
@@ -33,15 +59,39 @@ public class SongOverview extends TableView<Song> {
                 if (event.getClickCount() > 1) {
                     setSongToPlay(getSelectionModel().getSelectedItem());
                     rootBorderPane.setSongDetails(getSelectionModel().getSelectedItem());
+                    rootBorderPane.setSongInfos(getSelectionModel().getSelectedItem());
                 }
             }
+        });
+
+
+        miPlay.setOnAction((ActionEvent event) -> {
+            Song song = getSelectionModel().getSelectedItem();
+            mediaAPI.playSong(song);
+            System.out.println("played song " + song.toString());
+        });
+        miEdit.setOnAction((ActionEvent event) -> {
+            Song song = getSelectionModel().getSelectedItem();
+            title.setEditable(true);
+            mediaAPI.editSong(song, FieldKey.ARTIST, "Suran");
+            System.out.println("played song " + song.toString());
+        });
+        miRemove.setOnAction((ActionEvent event) -> {
+            Song song = getSelectionModel().getSelectedItem();
+            mediaAPI.removeSong(song);
+            System.out.println("removed song " + song.toString());
+        });
+        miDelete.setOnAction((ActionEvent event) -> {
+            Song song = getSelectionModel().getSelectedItem();
+            mediaAPI.deleteSong(song);
+            System.out.println("Deleted song " + song.toString());
         });
     }
 
     private void setSongToPlay(Song selectedItem) {
         songToPlay = selectedItem;
         System.out.println("path: " + selectedItem.getSongPath());
-        rootBorderPane.getMediaAPI().playSong(selectedItem);
+        mediaAPI.playSong(selectedItem);
         System.out.println("clicked on " + songToPlay.getSongName());
     }
 
@@ -49,22 +99,12 @@ public class SongOverview extends TableView<Song> {
 
     }
 
-    private void initComponents() {
-        title = new TableColumn<>("Title");
-        artist = new TableColumn<>("Arist");
-    }
-
-    private void addComponents() {
-        //noinspection unchecked
-        getColumns().addAll(title, artist);
-    }
-
     private void setFactories() {
         title.setCellValueFactory(c -> new ReadOnlyStringWrapper(c.getValue().getSongName()));
         artist.setCellValueFactory(c -> new ReadOnlyStringWrapper(c.getValue().getSongArtist()));
     }
 
-    public void setSongs(ObservableList<Song> songs) {
-        getItems().setAll(songs);
+    public void setSongs() {
+        getItems().setAll(mediaAPI.getSongList());
     }
 }

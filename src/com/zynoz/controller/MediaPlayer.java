@@ -1,6 +1,5 @@
 package com.zynoz.controller;
 
-import com.zynoz.exception.SongException;
 import com.zynoz.model.Song;
 import com.zynoz.util.Util;
 import javafx.collections.ObservableList;
@@ -36,6 +35,10 @@ public final class MediaPlayer  {
         this.volume =  volume;
     }
 
+    public double getVolume() {
+        return volume;
+    }
+
     public boolean isPlaying() {
         return isPlaying;
     }
@@ -58,21 +61,36 @@ public final class MediaPlayer  {
         return fxPlayer;
     }
 
-    public javafx.scene.media.MediaPlayer playNextSong() throws SongException {
-        return playRandomSong();
-    }
-
-    public javafx.scene.media.MediaPlayer playRandomSong() throws SongException {
-        return playSong(util.getRandomSong());
-    }
-
-    public void togglePlayPause() {
-        if (isPlaying) {
-            fxPlayer.pause();
-            isPlaying = false;
+    public javafx.scene.media.MediaPlayer playNextSong() {
+        int currentIndex = songs.indexOf(currentSong);
+        int newIndex;
+        if (currentIndex < songs.size() - 1) {
+            newIndex = songs.indexOf(currentSong) + 1;
         } else {
-            fxPlayer.play();
-            isPlaying = true;
+            newIndex = 0;
         }
+        return playSong(songs.get(newIndex));
+    }
+
+    public javafx.scene.media.MediaPlayer playRandomSong() {
+        int rng = Util.getRandomeSong(songs.size());
+        System.out.println("Random number: " + rng);
+        return playSong(songs.get(rng));
+    }
+
+    public void play() {
+        fxPlayer.play();
+    }
+
+    public void pause() {
+        fxPlayer.pause();
+    }
+
+    public javafx.scene.media.MediaPlayer getFxPlayer() {
+        return fxPlayer;
+    }
+
+    public Song getCurrentSong() {
+        return currentSong;
     }
 }
