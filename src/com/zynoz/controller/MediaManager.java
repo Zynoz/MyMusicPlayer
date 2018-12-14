@@ -12,7 +12,6 @@ import javafx.collections.ObservableList;
 import org.jaudiotagger.tag.FieldKey;
 
 import java.io.File;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +53,7 @@ public class MediaManager {
 
     private void addMp3s(final List<String> mp3paths) throws SongException {
         for (String s : mp3paths) {
-            songs.add(new Song(Paths.get(s)));
+            songs.add(new Song(s));
         }
     }
 
@@ -67,8 +66,11 @@ public class MediaManager {
        } else {
            String path = dir.getPath();
            if (path.endsWith(".mp3")) {
-               System.out.println(path);
-               mp3paths.add(dir.getPath());
+               //System.out.println("path old: " + path);
+               path = path.replace("\\", "/");
+               System.out.println("path new: " + path);
+
+               mp3paths.add(path);
            }
        }
     }

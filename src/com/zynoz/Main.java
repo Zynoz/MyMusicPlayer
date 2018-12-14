@@ -1,7 +1,7 @@
 package com.zynoz;
 
 import com.zynoz.controller.MediaManager;
-import com.zynoz.ui.RootBorderPane;
+import com.zynoz.views.RootBorderPane;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -22,7 +22,7 @@ public class Main extends Application {
         MediaManager mediaManager = MediaManager.getInstance();
         RootBorderPane rootBorderPane = new RootBorderPane(mediaManager);
 
-        Scene scene = new Scene(rootBorderPane, 400, 400);
+        Scene scene = new Scene(rootBorderPane, 500, 300);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

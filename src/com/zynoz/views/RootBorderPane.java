@@ -1,7 +1,8 @@
-package com.zynoz.ui;
+package com.zynoz.views;
 
 import com.zynoz.controller.MediaAPI;
 import com.zynoz.controller.MediaManager;
+import com.zynoz.model.Song;
 import javafx.application.Platform;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -13,7 +14,8 @@ public class RootBorderPane extends BorderPane {
     private MenuBar menuBar;
     private Menu mFile, mEdit, mHelp;
     private MenuItem miReload, miExit;
-    private Overview overview;
+    private SongOverview songOverview;
+    private SongDetails songDetails;
 
     private MediaAPI mediaAPI;
 
@@ -22,7 +24,7 @@ public class RootBorderPane extends BorderPane {
         addComponents();
         addListeners();
         setVis(true);
-        mediaAPI = new MediaAPI(mediaManager, this);
+        mediaAPI = new MediaAPI(mediaManager);
     }
 
     private void initComponents() {
@@ -35,7 +37,8 @@ public class RootBorderPane extends BorderPane {
         miReload = new MenuItem("Reload songs");
         miExit = new MenuItem("Exit");
 
-        overview = new Overview();
+        songOverview = new SongOverview(this);
+        songDetails = new SongDetails(this);
     }
 
     private void addComponents() {
@@ -44,22 +47,31 @@ public class RootBorderPane extends BorderPane {
         menuBar.getMenus().addAll(mFile, mEdit, mHelp);
 
         setTop(menuBar);
-        setCenter(overview);
+        setLeft(songOverview);
+        setCenter(songDetails);
     }
 
     private void addListeners() {
         miExit.setOnAction(event -> Platform.exit());
         miReload.setOnAction(event -> {
             mediaAPI.reload();
-            overview.setSongs(mediaAPI.getSongs());
+            songOverview.setSongs(mediaAPI.getSongs());
         });
     }
 
     private void setVis(boolean visible) {
-        overview.setVisible(visible);
+        songOverview.setVisible(visible);
     }
 
-    public Overview getOverview() {
-        return overview;
+    public SongOverview getSongOverview() {
+        return songOverview;
+    }
+
+    public MediaAPI getMediaAPI() {
+        return mediaAPI;
+    }
+
+    public void setSongDetails(Song song) {
+        songDetails.setSong(song);
     }
 }

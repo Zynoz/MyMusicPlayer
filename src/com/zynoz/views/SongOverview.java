@@ -1,4 +1,4 @@
-package com.zynoz.ui;
+package com.zynoz.views;
 
 import com.zynoz.model.Song;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -8,17 +8,20 @@ import javafx.scene.control.TableView;
 import javafx.scene.input.MouseButton;
 
 
-public class Overview extends TableView<Song> {
+public class SongOverview extends TableView<Song> {
     private TableColumn<Song, String> title, artist;
 
     private Song songToPlay;
+    private RootBorderPane rootBorderPane;
 
-    public Overview() {
+    public SongOverview(RootBorderPane rootBorderPane) {
         initComponents();
         addComponents();
         setFactories();
         setupListeners();
-
+        this.rootBorderPane = rootBorderPane;
+        title.setResizable(true);
+        artist.setResizable(true);
     }
 
     private void setupListeners() {
@@ -29,6 +32,7 @@ public class Overview extends TableView<Song> {
             } else if (event.getButton() == MouseButton.PRIMARY){
                 if (event.getClickCount() > 1) {
                     setSongToPlay(getSelectionModel().getSelectedItem());
+                    rootBorderPane.setSongDetails(getSelectionModel().getSelectedItem());
                 }
             }
         });
@@ -36,7 +40,9 @@ public class Overview extends TableView<Song> {
 
     private void setSongToPlay(Song selectedItem) {
         songToPlay = selectedItem;
-        System.out.println("clicked on " + selectedItem.getSongName());
+        System.out.println("path: " + selectedItem.getSongPath());
+        rootBorderPane.getMediaAPI().playSong(selectedItem);
+        System.out.println("clicked on " + songToPlay.getSongName());
     }
 
     private void displaySong(Song song) {
@@ -60,9 +66,5 @@ public class Overview extends TableView<Song> {
 
     public void setSongs(ObservableList<Song> songs) {
         getItems().setAll(songs);
-    }
-
-    private void observerSongAndUpdate() {
-
     }
 }

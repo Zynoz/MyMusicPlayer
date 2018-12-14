@@ -1,5 +1,6 @@
 package com.zynoz.util;
 
+import com.zynoz.Main;
 import com.zynoz.exception.TagException;
 import com.zynoz.model.Song;
 import javafx.embed.swing.SwingFXUtils;
@@ -35,44 +36,51 @@ public class Tags {
         }
     }
 
-    public static Optional<Image> getCover(final Song song) throws TagException {
+    public static Optional<Image> getCover(final Song song) {
         if (song != null) {
-            MP3File mp3File;
+            MP3File mp3File = null;
             try {
                 mp3File = (MP3File) AudioFileIO.read(new File(String.valueOf(song.getSongPath())));
             } catch (CannotReadException | IOException | org.jaudiotagger.tag.TagException | ReadOnlyFileException | InvalidAudioFrameException e) {
-                throw new TagException(e.getMessage());
+                Main.alert(e.getCause().toString(), e.getMessage());
             }
             if (mp3File != null) {
                 if (mp3File.getTag() != null) {
                     Artwork artwork = mp3File.getTag().getFirstArtwork();
                     try {
-                        return Optional.of(SwingFXUtils.toFXImage((BufferedImage) artwork.getImage(), null));
+                        if (artwork != null) {
+                            return Optional.of(SwingFXUtils.toFXImage((BufferedImage) artwork.getImage(), null));
+                        } else {
+                            Main.alert("Null", "Artwork is null");
+                        }
                     } catch (IOException e) {
-                        throw new TagException(e.getMessage());
+                        Main.alert(e.getCause().toString(), e.getMessage());
                     }
                 } else {
-                    throw new TagException("Could not get MP3 tag.");
+                    Main.alert("", "Could not get MP3 tag.");
                 }
             } else {
-                throw new TagException("MP3File is null");
+                Main.alert("", "MP3File is null");
             }
         } else {
-            throw new TagException("Song is null.");
+            Main.alert("", "Song is null.");
         }
+        return Optional.empty();
     }
 
-    public static int getDuration(final Song song) throws TagException {
+    public static int getDuration(final Song song)  {
         if (song != null) {
             try {
                 AudioFile audioFile = AudioFileIO.read(new File(String.valueOf(song.getSongPath())));
                 return (audioFile.getAudioHeader().getTrackLength());
             } catch (Exception e) {
-                throw new TagException(e.getMessage());
+                Main.alert(e.getCause().toString(), e.getMessage());
             }
         } else {
-            throw new TagException("Song is null.");
+            //todo
+            return 0;
         }
+        return 0;
     }
     public static boolean set(final Song song, final FieldKey fieldKey, final String string) throws TagException {
         if (song != null) {

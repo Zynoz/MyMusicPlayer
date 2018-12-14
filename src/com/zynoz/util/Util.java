@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.Properties;
 
 public class Util {
@@ -32,7 +31,7 @@ public class Util {
 
     public Song getRandomSong() throws SongException {
         //TODO
-        return new Song(Paths.get(""));
+        return new Song("");
     }
 
     public void createProperties() throws CommonException {

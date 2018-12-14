@@ -1,9 +1,6 @@
 package com.zynoz.controller;
 
-import com.zynoz.Main;
-import com.zynoz.exception.SongException;
 import com.zynoz.model.Song;
-import com.zynoz.ui.RootBorderPane;
 import javafx.collections.ObservableList;
 
 public class MediaAPI {
@@ -12,16 +9,14 @@ public class MediaAPI {
 
     public MediaAPI(MediaManager mediaManager) {
         this.mediaManager = mediaManager;
-
-        try {
-            mediaManager.getMediaPlayer().playRandomSong();
-        } catch (SongException e) {
-            Main.alert(e.getCause().toString(), e.getMessage());
-        }
     }
 
-    public MediaAPI(MediaManager mediaManager, RootBorderPane rootBorderPane) {
+    public boolean isPlaying() {
+        return mediaManager.getMediaPlayer().isPlaying();
+    }
 
+    public void togglePlayPause() {
+        mediaManager.getMediaPlayer().togglePlayPause();
     }
 
     public void reload() {
@@ -32,4 +27,7 @@ public class MediaAPI {
         return mediaManager.getSongs();
     }
 
+    public void playSong(Song selectedItem) {
+        mediaManager.playSong(selectedItem);
+    }
 }

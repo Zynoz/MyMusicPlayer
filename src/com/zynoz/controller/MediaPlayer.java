@@ -6,6 +6,8 @@ import com.zynoz.util.Util;
 import javafx.collections.ObservableList;
 import javafx.scene.media.Media;
 
+import java.io.File;
+
 public final class MediaPlayer  {
     private static MediaPlayer instance;
 
@@ -45,7 +47,8 @@ public final class MediaPlayer  {
             isPlaying = false;
         }
 
-        Media media = new Media(song.getSongPath().toString());
+        System.out.println(song.toString());
+        Media media = new Media(new File(song.getSongPath()).toURI().toString());
         fxPlayer = new javafx.scene.media.MediaPlayer(media);
         fxPlayer.play();
         currentSong = song;
