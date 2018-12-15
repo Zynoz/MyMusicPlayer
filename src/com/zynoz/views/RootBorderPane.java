@@ -38,20 +38,22 @@ public class RootBorderPane extends BorderPane {
         miReload = new MenuItem("Reload songs");
         miExit = new MenuItem("Exit");
 
+        bottomPane = new BottomPane(this, mediaAPI);
         songOverview = new SongOverview(this, mediaAPI);
         songDetails = new SongDetails(this, mediaAPI);
-        bottomPane = new BottomPane(this, mediaAPI);
         rightGridPane = new RightGridPane(this, mediaAPI);
+
+        songOverview.setPrefWidth(300);
     }
 
     private void addComponents() {
         mFile.getItems().addAll(miReload, new SeparatorMenuItem(), miExit);
         menuBar.getMenus().addAll(mFile, mEdit, mHelp);
 
+        setBottom(bottomPane);
         setTop(menuBar);
         setLeft(songOverview);
         setCenter(songDetails);
-        setBottom(bottomPane);
         setRight(rightGridPane);
         BorderPane.setAlignment(bottomPane, Pos.CENTER);
         songOverview.setSongs();

@@ -4,12 +4,13 @@ import com.zynoz.controller.MediaAPI;
 import com.zynoz.model.Song;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.event.ActionEvent;
+import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseButton;
-import org.jaudiotagger.tag.FieldKey;
+import javafx.stage.Stage;
 
 
 public class SongOverview extends TableView<Song> {
@@ -41,6 +42,9 @@ public class SongOverview extends TableView<Song> {
         miEdit = new MenuItem("Edit");
         miRemove = new MenuItem("Remove");
         miDelete = new MenuItem("Delete");
+
+        title.setEditable(true);
+        artist.setEditable(true);
     }
 
     private void addComponents() {
@@ -68,23 +72,26 @@ public class SongOverview extends TableView<Song> {
         miPlay.setOnAction((ActionEvent event) -> {
             Song song = getSelectionModel().getSelectedItem();
             mediaAPI.playSong(song);
-            System.out.println("played song " + song.toString());
+            System.out.println("play song " + song.toString());
         });
         miEdit.setOnAction((ActionEvent event) -> {
             Song song = getSelectionModel().getSelectedItem();
-            title.setEditable(true);
-            mediaAPI.editSong(song, FieldKey.ARTIST, "Suran");
-            System.out.println("played song " + song.toString());
+            EditGridPane editGridPane = new EditGridPane(rootBorderPane, mediaAPI, song);
+            Scene scene = new Scene(editGridPane);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.show();
+            System.out.println("edit song " + song.toString());
         });
         miRemove.setOnAction((ActionEvent event) -> {
             Song song = getSelectionModel().getSelectedItem();
             mediaAPI.removeSong(song);
-            System.out.println("removed song " + song.toString());
+            System.out.println("remove song " + song.toString());
         });
         miDelete.setOnAction((ActionEvent event) -> {
             Song song = getSelectionModel().getSelectedItem();
             mediaAPI.deleteSong(song);
-            System.out.println("Deleted song " + song.toString());
+            System.out.println("delete song " + song.toString());
         });
     }
 
