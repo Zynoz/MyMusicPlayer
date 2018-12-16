@@ -79,9 +79,10 @@ public class SongOverview extends TableView<Song> {
             EditGridPane editGridPane = new EditGridPane(rootBorderPane, mediaAPI, song);
             Scene scene = new Scene(editGridPane);
             Stage stage = new Stage();
+            editGridPane.setStage(stage);
+            stage.setResizable(false);
             stage.setScene(scene);
             stage.show();
-            System.out.println("edit song " + song.toString());
         });
         miRemove.setOnAction((ActionEvent event) -> {
             Song song = getSelectionModel().getSelectedItem();

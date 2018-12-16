@@ -1,7 +1,6 @@
 package com.zynoz.controller;
 
 import com.zynoz.Main;
-import com.zynoz.exception.TagException;
 import com.zynoz.model.Song;
 import com.zynoz.util.Tags;
 import com.zynoz.util.Util;
@@ -78,12 +77,7 @@ public class MediaManager {
     }
 
     public boolean editSongCover(final Song song, final File image) {
-        try {
             return Tags.setCover(song, image);
-        } catch (TagException e) {
-            Main.alert(e.getCause().toString(), e.getMessage());
-            return false;
-        }
     }
 
     public boolean removeSong(final Song song) {

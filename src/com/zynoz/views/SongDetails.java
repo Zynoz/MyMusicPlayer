@@ -3,6 +3,7 @@ package com.zynoz.views;
 import com.zynoz.controller.MediaAPI;
 import com.zynoz.model.Song;
 import com.zynoz.util.Tags;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
@@ -36,11 +37,12 @@ public class SongDetails extends GridPane {
         setBackground(new Background(backgroundImage));
     }
 
+    @SuppressWarnings("ConstantConditions")
     public void setSong(Song song) {
         this.song = song;
-        if (Tags.getCover(song).isPresent()) {
+        if (Tags.getCover(song) != null) {
             System.out.println("image present");
-            songCover = Tags.getCover(song).get();
+            songCover = SwingFXUtils.toFXImage(Tags.getCover(song), null);
         } else {
             System.out.println("image not present");
             songCover = new Image(String.valueOf(resource));
