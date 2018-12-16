@@ -70,7 +70,7 @@ public class Tags {
     public static boolean set(final Song song, final FieldKey fieldKey, final String string) {
         if (song != null) {
             try {
-                AudioFile audioFile = audioFile = AudioFileIO.read(new File(String.valueOf(song.getSongPath())));
+                AudioFile audioFile = AudioFileIO.read(new File(String.valueOf(song.getSongPath())));
                 audioFile.getTag().setField(fieldKey, string);
                 audioFile.commit();
                 return true;
@@ -91,6 +91,7 @@ public class Tags {
                     Artwork artwork = ArtworkFactory.createArtworkFromFile(image);
                     if (artwork != null) {
                         if (audioFile != null) {
+                            audioFile.getTag().deleteArtworkField();
                             audioFile.getTag().addField(artwork);
                             audioFile.getTag().setField(artwork);
                             audioFile.commit();
@@ -103,8 +104,8 @@ public class Tags {
                         System.out.println("Artwork is null");
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
-                    //Main.alert(e.getCause().toString(), e.getMessage());
+                    //e.printStackTrace();
+                    Main.alert(e.getCause().toString(), e.getMessage());
                 }
             } else {
                 Main.alert("", "Image is null");

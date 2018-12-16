@@ -21,7 +21,6 @@ import org.jaudiotagger.tag.FieldKey;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 
 public class EditGridPane extends GridPane {
@@ -59,10 +58,8 @@ public class EditGridPane extends GridPane {
         artist = new Label("Artist: ");
         if (Tags.getCover(songToEdit) != null) {
             artcover = new ImageView(SwingFXUtils.toFXImage(Tags.getCover(songToEdit), null));
-            System.out.println("image present");
         } else {
             artcover = new ImageView(String.valueOf(resource));
-            System.out.println("image not present");
         }
         System.out.println();
         artcover.setFitHeight(50);
@@ -95,7 +92,7 @@ public class EditGridPane extends GridPane {
                 if (file != null && file.isFile()) {
                     if (file.toString().endsWith(".png") || file.toString().endsWith(".jpg") || file.toString().endsWith(".jpeg")) {
                         selectedFile = file;
-                        artcover.setImage(new Image(file.toURI().toString()));
+                        artcover.setImage(new Image(selectedFile.toURI().toString()));
                     } else {
                         Main.alert("Not valid","No file selected.");
                     }
@@ -109,16 +106,20 @@ public class EditGridPane extends GridPane {
             if (!textTitle.getText().equals("") && !textArtist.getText().equals("")) {
                 Tags.set(songToEdit, FieldKey.TITLE, textTitle.getText());
                 Tags.set(songToEdit, FieldKey.ARTIST, textArtist.getText());
-                try {
-                    if (selectedFile != null) {
+                if (selectedFile != null) {
+                    try {
                         BufferedImage bufferedImage = ImageIO.read(selectedFile);
                         newImage = SwingFXUtils.toFXImage(bufferedImage, null);
                         Tags.setCover(songToEdit, selectedFile);
+                    } catch (Exception e) {
+                        Main.alert(e.getClass().toString(), e.getMessage());
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
+                mediaAPI.reload();
+                rootBorderPane.getSongOverview().setSongs();
                 stage.close();
+            } else {
+                Main.alert("Error", "Title or artist name not valid.");
             }
         });
 

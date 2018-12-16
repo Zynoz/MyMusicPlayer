@@ -3,7 +3,6 @@ package com.zynoz.views;
 import com.zynoz.controller.MediaAPI;
 import com.zynoz.model.Song;
 import javafx.application.Platform;
-import javafx.geometry.Pos;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -15,9 +14,7 @@ public class RootBorderPane extends BorderPane {
     private Menu mFile, mEdit, mHelp;
     private MenuItem miReload, miExit;
     private SongOverview songOverview;
-    private SongDetails songDetails;
-    private BottomPane bottomPane;
-    private RightGridPane rightGridPane;
+    private RightVBox rightVBox;
 
     private MediaAPI mediaAPI;
 
@@ -38,10 +35,8 @@ public class RootBorderPane extends BorderPane {
         miReload = new MenuItem("Reload songs");
         miExit = new MenuItem("Exit");
 
-        bottomPane = new BottomPane(this, mediaAPI);
         songOverview = new SongOverview(this, mediaAPI);
-        songDetails = new SongDetails(this, mediaAPI);
-        rightGridPane = new RightGridPane(this, mediaAPI);
+        rightVBox = new RightVBox(this, mediaAPI);
 
         songOverview.setPrefWidth(300);
     }
@@ -50,12 +45,9 @@ public class RootBorderPane extends BorderPane {
         mFile.getItems().addAll(miReload, new SeparatorMenuItem(), miExit);
         menuBar.getMenus().addAll(mFile, mEdit, mHelp);
 
-        setBottom(bottomPane);
         setTop(menuBar);
         setLeft(songOverview);
-        setCenter(songDetails);
-        setRight(rightGridPane);
-        BorderPane.setAlignment(bottomPane, Pos.CENTER);
+        setRight(rightVBox);
         songOverview.setSongs();
     }
 
@@ -71,12 +63,8 @@ public class RootBorderPane extends BorderPane {
         return songOverview;
     }
 
-    public void setSongDetails(Song song) {
-        songDetails.setSong(song);
-    }
-
 
     public void setSongInfos(Song selectedItem) {
-        rightGridPane.setSong(selectedItem);
+        rightVBox.setSong(selectedItem);
     }
 }

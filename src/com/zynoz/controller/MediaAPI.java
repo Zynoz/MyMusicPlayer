@@ -74,6 +74,7 @@ public class MediaAPI {
 
     public void reload() {
         mediaManager.reload();
+        System.out.println("reloaded");
     }
 
     public ObservableList<Song> getSongs() {

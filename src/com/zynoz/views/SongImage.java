@@ -4,37 +4,37 @@ import com.zynoz.controller.MediaAPI;
 import com.zynoz.model.Song;
 import com.zynoz.util.Tags;
 import javafx.embed.swing.SwingFXUtils;
-import javafx.geometry.Insets;
 import javafx.scene.image.Image;
-import javafx.scene.layout.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
 
-public class SongDetails extends GridPane {
+public class SongImage extends AnchorPane {
     private Song song;
     private RootBorderPane rootBorderPane;
     private MediaAPI mediaAPI;
     private Image songCover;
+    private ImageView imageView;
     private URL resource = getClass().getResource("../resources/images/default.png");
 
-    public SongDetails(RootBorderPane rootBorderPane, MediaAPI mediaAPI) {
+    public SongImage(RootBorderPane rootBorderPane, MediaAPI mediaAPI) {
         this.rootBorderPane = rootBorderPane;
         this.mediaAPI = mediaAPI;
-        setHgap(10);
-        setVgap(10);
-        setPadding(new Insets(0, 10, 0, 10));
-
-        //initComponents();
+        initComponents();
         addComponents();
     }
 
     private void initComponents() {
-
+        songCover = new Image(String.valueOf(resource));
+        imageView = new ImageView();
     }
 
     private void addComponents() {
-        BackgroundImage backgroundImage = new BackgroundImage(new Image(String.valueOf(resource)), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-        setBackground(new Background(backgroundImage));
+        getChildren().add(imageView);
+        imageView.setImage(songCover);
+        imageView.setFitWidth(200);
+        imageView.setFitHeight(200);
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -43,12 +43,11 @@ public class SongDetails extends GridPane {
         if (Tags.getCover(song) != null) {
             System.out.println("image present");
             songCover = SwingFXUtils.toFXImage(Tags.getCover(song), null);
+            imageView.setImage(songCover);
         } else {
             System.out.println("image not present");
             songCover = new Image(String.valueOf(resource));
+            imageView.setImage(songCover);
         }
-
-        BackgroundImage backgroundImage = new BackgroundImage(songCover, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-        setBackground(new Background(backgroundImage));
     }
 }

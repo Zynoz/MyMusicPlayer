@@ -21,8 +21,9 @@ public class Main extends Application {
         RootBorderPane rootBorderPane = new RootBorderPane();
         //rootBorderPane.getStylesheets().add(String.valueOf(getClass().getResource("../resources/css/stylesheet.css")));
 
-        Scene scene = new Scene(rootBorderPane, 900, 600);
+        Scene scene = new Scene(rootBorderPane, 600, 400);
         primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 

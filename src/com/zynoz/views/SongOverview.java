@@ -30,8 +30,7 @@ public class SongOverview extends TableView<Song> {
         addComponents();
         setFactories();
         setupListeners();
-        title.setResizable(true);
-        artist.setResizable(true);
+
     }
 
     private void initComponents() {
@@ -45,6 +44,8 @@ public class SongOverview extends TableView<Song> {
 
         title.setEditable(true);
         artist.setEditable(true);
+        title.setResizable(true);
+        artist.setResizable(true);
     }
 
     private void addComponents() {
@@ -52,17 +53,20 @@ public class SongOverview extends TableView<Song> {
         getColumns().addAll(title, artist);
         contextMenu.getItems().addAll(miPlay, miEdit, miRemove, miDelete);
         setContextMenu(contextMenu);
+        setMinWidth(title.getPrefWidth() + artist.getPrefWidth());
+        setPrefWidth(400);
+        setMaxWidth(400);
+        setMinWidth(400);
     }
 
     private void setupListeners() {
-        this.getSelectionModel().selectedItemProperty().addListener((((observable, oldValue, newValue) -> displaySong(newValue))));
+        //this.getSelectionModel().selectedItemProperty().addListener((((observable, oldValue, newValue) -> displaySong(newValue))));
         this.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.SECONDARY) {
                 //TODO context menu here
             } else if (event.getButton() == MouseButton.PRIMARY){
                 if (event.getClickCount() > 1) {
                     setSongToPlay(getSelectionModel().getSelectedItem());
-                    rootBorderPane.setSongDetails(getSelectionModel().getSelectedItem());
                     rootBorderPane.setSongInfos(getSelectionModel().getSelectedItem());
                 }
             }
@@ -103,10 +107,6 @@ public class SongOverview extends TableView<Song> {
         System.out.println("clicked on " + songToPlay.getSongName());
     }
 
-    private void displaySong(Song song) {
-
-    }
-
     private void setFactories() {
         title.setCellValueFactory(c -> new ReadOnlyStringWrapper(c.getValue().getSongName()));
         artist.setCellValueFactory(c -> new ReadOnlyStringWrapper(c.getValue().getSongArtist()));
@@ -114,5 +114,6 @@ public class SongOverview extends TableView<Song> {
 
     public void setSongs() {
         getItems().setAll(mediaAPI.getSongList());
+        System.out.println("set songs");
     }
 }
