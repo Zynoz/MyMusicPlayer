@@ -78,4 +78,8 @@ public class RightVBox extends VBox {
     public ButtonsHBox getButtonsHBox() {
         return buttonsHBox;
     }
+
+    public VolumeHBox getVolumeHBox() {
+        return volumeHBox;
+    }
 }

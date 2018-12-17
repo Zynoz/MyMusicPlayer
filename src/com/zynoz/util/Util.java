@@ -3,9 +3,10 @@ package com.zynoz.util;
 import com.zynoz.controller.MediaAPI;
 import com.zynoz.exception.CommonException;
 import com.zynoz.model.Song;
+import com.zynoz.server.Server;
+import com.zynoz.views.BaseSettings;
 import com.zynoz.views.EditGridPane;
 import com.zynoz.views.RootBorderPane;
-import com.zynoz.views.Settings;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -19,6 +20,7 @@ import java.util.Random;
 
 public class Util {
     private static final File configFile = new File(getUserDir() + "cfg.properties");
+    private int port;
 
     private static File getUserDir() {
         return new File(System.getProperty("user.home") + File.separator + ".mmp" + File.separator);
@@ -42,10 +44,11 @@ public class Util {
     }
 
     public static void openSettings(RootBorderPane rootBorderPane, MediaAPI mediaAPI) {
-        Settings settings = new Settings(rootBorderPane, mediaAPI);
-        Scene scene = new Scene(settings);
+        BaseSettings baseSettings = new BaseSettings(rootBorderPane, mediaAPI);
+        Scene scene = new Scene(baseSettings, 600, 400);
         Stage stage = new Stage();
-        settings.setStage(stage);
+        baseSettings.setStage(stage);
+        stage.setTitle("Settings");
         stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
@@ -95,7 +98,8 @@ public class Util {
         Properties properties = new Properties();
 
         //TODO set properties accordingly.
-        //properties.setProperty("", "");
+        properties.setProperty("defaultPort", "6666");
+        properties.setProperty("port", getPort());
 
         try {
             FileWriter fileWriter = new FileWriter(configFile);
@@ -114,12 +118,25 @@ public class Util {
             properties.load(fileReader);
 
             //TODO load properties accordingly.
-            //properties.getProperty("");
+            setPort(properties.getProperty("port"));
 
             fileReader.close();
 
         } catch (IOException e) {
             throw new CommonException(e.getClass() + ": " + e.getMessage());
         }
+    }
+
+    public static void startServer(RootBorderPane rootBorderPane, MediaAPI mediaAPI) {
+        Thread thread = new Thread(() -> new Server(rootBorderPane, mediaAPI, Integer.valueOf(getPort())));
+        thread.start();
+    }
+
+    public static String getPort() {
+        return "6666";
+    }
+
+    public static void setPort(String text) {
+
     }
 }

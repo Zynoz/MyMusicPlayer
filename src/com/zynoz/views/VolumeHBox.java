@@ -43,4 +43,8 @@ public class VolumeHBox extends HBox {
         this.song = song;
         mediaAPI.setVolume(volumeSlider.getValue() / 100);
     }
+
+    public JFXSlider getVolumeSlider() {
+        return volumeSlider;
+    }
 }

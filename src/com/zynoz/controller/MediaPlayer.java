@@ -44,6 +44,7 @@ public final class MediaPlayer  {
         this.volume =  volume;
         if (fxPlayer != null) {
             fxPlayer.setVolume(volume);
+//            rootBorderPane.getRightVBox().getVolumeHBox().
         }
     }
 

@@ -21,6 +21,16 @@ public class ButtonsHBox extends HBox {
         addListeners();
     }
 
+    private void initComponents() {
+        playPause = new JFXButton("||");
+        next = new JFXButton("Next");
+        edit = new JFXButton("Edit Song");
+    }
+
+    private void addComponents() {
+        getChildren().addAll(playPause, next, edit);
+    }
+
     private void addListeners() {
         next.setOnAction(event -> {
             mediaAPI.playRandomSong();
@@ -40,16 +50,6 @@ public class ButtonsHBox extends HBox {
             playPause.setText("||");
             mediaAPI.playPause();
         }
-    }
-
-    private void initComponents() {
-        playPause = new JFXButton("||");
-        next = new JFXButton("Next");
-        edit = new JFXButton("Edit Song");
-    }
-
-    private void addComponents() {
-        getChildren().addAll(playPause, next, edit);
     }
 
     public void setSong(Song song) {

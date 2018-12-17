@@ -31,8 +31,6 @@ public class EditGridPane extends GridPane {
 
     private URL resource = getClass().getResource("../resources/images/default.png");
     private File selectedFile;
-    private String newTitle, newArtist;
-    private Image newImage;
 
     private RootBorderPane rootBorderPane;
     private MediaAPI mediaAPI;
@@ -111,7 +109,6 @@ public class EditGridPane extends GridPane {
                 if (selectedFile != null) {
                     try {
                         BufferedImage bufferedImage = ImageIO.read(selectedFile);
-                        newImage = SwingFXUtils.toFXImage(bufferedImage, null);
                         Tags.setCover(songToEdit, selectedFile);
                     } catch (Exception e) {
                         Main.alert(e.getClass().toString(), e.getMessage());

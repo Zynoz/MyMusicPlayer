@@ -39,7 +39,7 @@ public class Server {
         serverSocket = new ServerSocket(port);
         try {
             while (true) {
-                new Player(serverSocket.accept(), clientNumber++, rootBorderPane, mediaAPI).start();
+                new PlayerProtocol(serverSocket.accept(), clientNumber++, rootBorderPane, mediaAPI).start();
             }
         } finally {
             serverSocket.close();

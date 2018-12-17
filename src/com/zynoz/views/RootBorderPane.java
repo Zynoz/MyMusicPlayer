@@ -35,7 +35,7 @@ public class RootBorderPane extends BorderPane {
         mHelp = new Menu("Help");
 
         miReload = new MenuItem("Reload songs");
-        miSettings = new MenuItem("Settings");
+        miSettings = new MenuItem("BaseSettings");
         miExit = new MenuItem("Exit");
 
         songOverview = new SongOverview(this, mediaAPI);

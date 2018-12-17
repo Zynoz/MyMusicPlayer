@@ -10,16 +10,14 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class Player extends Thread {
+public class PlayerProtocol extends Thread {
     private Socket socket;
-    private int clientNumber;
 
     private RootBorderPane rootBorderPane;
     private MediaAPI mediaAPI;
 
-    public Player(Socket socket, int clientNumber, RootBorderPane rootBorderPane, MediaAPI mediaAPI) {
+    public PlayerProtocol(Socket socket, int clientNumber, RootBorderPane rootBorderPane, MediaAPI mediaAPI) {
         this.socket = socket;
-        this.clientNumber = clientNumber;
         this.rootBorderPane = rootBorderPane;
         this.mediaAPI = mediaAPI;
         System.out.println("New connection with client# " + clientNumber + " at " + socket);
@@ -28,13 +26,13 @@ public class Player extends Thread {
     public void run() {
         System.out.println("new player server");
         try {
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
             out.println(mediaAPI.getCurrentSong());
 
             while (true) {
-                String input = in.readLine();
+                String input = bufferedReader.readLine();
                 if (input == null || input.equals(".")) {
                     break;
                 }
@@ -46,6 +44,11 @@ public class Player extends Thread {
                     mediaAPI.playNextSong();
                     Platform.runLater(() -> rootBorderPane.getSongOverview().setSongs());
                     out.println(mediaAPI.getCurrentSong());
+                } else if (input.startsWith("volume:")) {
+                    double value = Double.parseDouble(input.substring(7));
+                    System.out.println("input: " + input + "; value: " + value);
+                    Platform.runLater(() -> rootBorderPane.getRightVBox().getVolumeHBox().getVolumeSlider().setValue(value));
+                    mediaAPI.setVolume(value);
                 }
             }
         } catch (IOException e) {
