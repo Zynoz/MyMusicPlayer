@@ -4,7 +4,7 @@
       <root url="jar://$PROJECT_DIR$/libs/jaudiotagger-2.2.6-SNAPSHOT.jar!/" />
       <root url="jar://$PROJECT_DIR$/libs/log4j-api-2.11.1.jar!/" />
       <root url="jar://$PROJECT_DIR$/libs/log4j-1.2-api-2.11.1.jar!/" />
-      <root url="jar://$PROJECT_DIR$/../../lib/jfoenix-9.0.8.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/jfoenix-9.0.8.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/libs/log4j-1.2-api-2.11.1-javadoc.jar!/" />
