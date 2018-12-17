@@ -21,6 +21,15 @@ import java.util.Random;
 public class Util {
     private static final File configFile = new File(getUserDir() + "cfg.properties");
     private int port;
+    private static Thread t;
+
+    static {
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            System.out.println("Stop");
+            //noinspection deprecation
+            t.stop();
+        }));
+    }
 
     private static File getUserDir() {
         return new File(System.getProperty("user.home") + File.separator + ".mmp" + File.separator);
@@ -128,8 +137,8 @@ public class Util {
     }
 
     public static void startServer(RootBorderPane rootBorderPane, MediaAPI mediaAPI) {
-        Thread thread = new Thread(() -> new Server(rootBorderPane, mediaAPI, Integer.valueOf(getPort())));
-        thread.start();
+        t = new Thread(() -> new Server(rootBorderPane, mediaAPI, Integer.valueOf(getPort())));
+        t.start();
     }
 
     public static String getPort() {

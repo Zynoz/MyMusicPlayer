@@ -3,6 +3,7 @@ package com.zynoz.views;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXTextField;
+import com.zynoz.Main;
 import com.zynoz.controller.MediaAPI;
 import com.zynoz.util.Util;
 import javafx.scene.control.Label;
@@ -42,9 +43,14 @@ public class RemoteGrid extends GridPane {
 
     private void addListeners() {
         startServer.setOnAction(event -> {
-            if (!port.getText().equals("")) {
-                Util.setPort(port.getText());
+            if (!portInput.getText().equals("") || !portInput.getText().isEmpty()) {
+                System.out.println(portInput.getText());
+                Util.setPort(portInput.getText());
                 Util.startServer(rootBorderPane, mediaAPI);
+                startServer.setText("Server already running");
+                startServer.setDisable(true);
+            } else {
+                Main.alert("Error", "Port is empty");
             }
         });
     }

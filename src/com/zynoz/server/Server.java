@@ -21,7 +21,7 @@ public class Server {
         this.port = port;
         try {
             startServer();
-        } catch (IOException e) {
+        } catch (Exception e) {
             Main.alert(e.getCause().toString(), e.getMessage());
         }
     }
