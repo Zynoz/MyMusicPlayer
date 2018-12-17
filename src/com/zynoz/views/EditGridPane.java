@@ -102,6 +102,8 @@ public class EditGridPane extends GridPane {
             }
         });
 
+        ok.setDefaultButton(true);
+
         ok.setOnAction(event -> {
             if (!textTitle.getText().equals("") && !textArtist.getText().equals("")) {
                 Tags.set(songToEdit, FieldKey.TITLE, textTitle.getText());
@@ -124,6 +126,7 @@ public class EditGridPane extends GridPane {
         });
 
         cancel.setOnAction(event -> stage.close());
+        cancel.setCancelButton(true);
     }
 
     public void setStage(Stage stage) {

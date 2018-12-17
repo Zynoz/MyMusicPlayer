@@ -1,8 +1,10 @@
 package com.zynoz.controller;
 
 import com.zynoz.model.Song;
+import com.zynoz.views.RootBorderPane;
 import javafx.collections.ObservableList;
 import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 import org.jaudiotagger.tag.FieldKey;
 
 import java.io.File;
@@ -99,5 +101,17 @@ public class MediaAPI {
 
     public boolean addSong(Song song) {
         return mediaManager.addSong(song);
+    }
+
+    public void seek(Duration v) {
+        mediaPlayer.seek(v);
+    }
+
+    public void setRootBorderPane(RootBorderPane rootBorderPane) {
+        mediaPlayer.setRootBorderPane(rootBorderPane);
+    }
+
+    public Duration getDuration() {
+        return mediaPlayer.getDuration();
     }
 }

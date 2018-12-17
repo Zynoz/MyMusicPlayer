@@ -2,6 +2,7 @@ package com.zynoz.views;
 
 import com.zynoz.controller.MediaAPI;
 import com.zynoz.model.Song;
+import com.zynoz.util.Util;
 import javafx.application.Platform;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -9,10 +10,12 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.layout.BorderPane;
 
+import java.lang.reflect.InvocationTargetException;
+
 public class RootBorderPane extends BorderPane {
     private MenuBar menuBar;
     private Menu mFile, mEdit, mHelp;
-    private MenuItem miReload, miExit;
+    private MenuItem miReload, miSettings, miExit;
     private SongOverview songOverview;
     private RightVBox rightVBox;
 
@@ -23,6 +26,7 @@ public class RootBorderPane extends BorderPane {
         initComponents();
         addComponents();
         addListeners();
+        mediaAPI.setRootBorderPane(this);
     }
 
     private void initComponents() {
@@ -33,6 +37,7 @@ public class RootBorderPane extends BorderPane {
         mHelp = new Menu("Help");
 
         miReload = new MenuItem("Reload songs");
+        miSettings = new MenuItem("Settings");
         miExit = new MenuItem("Exit");
 
         songOverview = new SongOverview(this, mediaAPI);
@@ -42,7 +47,8 @@ public class RootBorderPane extends BorderPane {
     }
 
     private void addComponents() {
-        mFile.getItems().addAll(miReload, new SeparatorMenuItem(), miExit);
+        mFile.getItems().addAll(miSettings, new SeparatorMenuItem(), miExit);
+        mEdit.getItems().addAll(miReload);
         menuBar.getMenus().addAll(mFile, mEdit, mHelp);
 
         setTop(menuBar);
@@ -57,6 +63,20 @@ public class RootBorderPane extends BorderPane {
             mediaAPI.reload();
             songOverview.setSongs();
         });
+        miSettings.setOnAction(event -> {
+//            Settings settings = new Settings(this, mediaAPI);
+//            Scene scene = new Scene(settings);
+//            Stage stage = new Stage();
+//            settings.setStage(stage);
+//            stage.setResizable(false);
+//            stage.setScene(scene);
+//            stage.show();
+            try {
+                Util.open(Settings.class, this, mediaAPI, null);
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     public SongOverview getSongOverview() {
@@ -66,5 +86,9 @@ public class RootBorderPane extends BorderPane {
 
     public void setSongInfos(Song selectedItem) {
         rightVBox.setSong(selectedItem);
+    }
+
+    public RightVBox getRightVBox() {
+        return rightVBox;
     }
 }

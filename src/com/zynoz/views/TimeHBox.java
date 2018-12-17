@@ -6,41 +6,49 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
 
-public class VolumeHBox extends HBox {
-    private Slider volumeSlider;
-    private Label volume = new Label("Volume");
+public class TimeHBox extends HBox {
+    private Slider timeSlider;
+    private Label time = new Label("00:00");
 
     private RootBorderPane rootBorderPane;
     private MediaAPI mediaAPI;
     private Song song;
 
-    public VolumeHBox(RootBorderPane rootBorderPane, MediaAPI mediaAPI) {
+    public TimeHBox(RootBorderPane rootBorderPane, MediaAPI mediaAPI) {
         this.rootBorderPane = rootBorderPane;
         this.mediaAPI = mediaAPI;
         initComponents();
         addComponents();
         addListeners();
+        timeSlider.setPrefWidth(120);
     }
 
     private void initComponents() {
-        volumeSlider = new Slider();
-        volumeSlider.setValue(100);
+        timeSlider = new Slider();
     }
 
     private void addComponents() {
-        getChildren().addAll(volume, volumeSlider);
+        getChildren().addAll(time, timeSlider);
     }
 
     private void addListeners() {
-        volumeSlider.valueProperty().addListener(observable -> {
-            if (volumeSlider.isValueChanging()) {
-                mediaAPI.setVolume(volumeSlider.getValue() / 100);
+        timeSlider.valueProperty().addListener(observable -> {
+            if (timeSlider.isValueChanging()) {
+                mediaAPI.seek(mediaAPI.getDuration().multiply(timeSlider.getValue() / 100.0));
             }
         });
     }
 
     public void setSong(Song song) {
         this.song = song;
-        mediaAPI.setVolume(volumeSlider.getValue() / 100);
+        timeSlider.setValue(0);
+    }
+
+    public Slider getTimeSlider() {
+        return timeSlider;
+    }
+
+    public Label getTime() {
+        return time;
     }
 }

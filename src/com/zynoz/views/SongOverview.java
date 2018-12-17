@@ -2,15 +2,15 @@ package com.zynoz.views;
 
 import com.zynoz.controller.MediaAPI;
 import com.zynoz.model.Song;
+import com.zynoz.util.Util;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.event.ActionEvent;
-import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
-import javafx.stage.Stage;
 
 
 public class SongOverview extends TableView<Song> {
@@ -57,11 +57,13 @@ public class SongOverview extends TableView<Song> {
         setPrefWidth(400);
         setMaxWidth(400);
         setMinWidth(400);
+        title.setReorderable(false);
+        artist.setReorderable(false);
+        setColumnResizePolicy(param -> true);
     }
 
     private void setupListeners() {
-        //this.getSelectionModel().selectedItemProperty().addListener((((observable, oldValue, newValue) -> displaySong(newValue))));
-        this.setOnMouseClicked(event -> {
+        setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.SECONDARY) {
                 //TODO context menu here
             } else if (event.getButton() == MouseButton.PRIMARY){
@@ -72,21 +74,23 @@ public class SongOverview extends TableView<Song> {
             }
         });
 
+        setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                setSongToPlay(getSelectionModel().getSelectedItem());
+                rootBorderPane.setSongInfos(getSelectionModel().getSelectedItem());
+            }
+        });
+
 
         miPlay.setOnAction((ActionEvent event) -> {
             Song song = getSelectionModel().getSelectedItem();
             mediaAPI.playSong(song);
+            rootBorderPane.setSongInfos(song);
             System.out.println("play song " + song.toString());
         });
         miEdit.setOnAction((ActionEvent event) -> {
             Song song = getSelectionModel().getSelectedItem();
-            EditGridPane editGridPane = new EditGridPane(rootBorderPane, mediaAPI, song);
-            Scene scene = new Scene(editGridPane);
-            Stage stage = new Stage();
-            editGridPane.setStage(stage);
-            stage.setResizable(false);
-            stage.setScene(scene);
-            stage.show();
+            Util.openEditDialogue(rootBorderPane, mediaAPI, song);
         });
         miRemove.setOnAction((ActionEvent event) -> {
             Song song = getSelectionModel().getSelectedItem();
