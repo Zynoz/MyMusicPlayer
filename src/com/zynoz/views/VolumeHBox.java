@@ -1,13 +1,13 @@
 package com.zynoz.views;
 
+import com.jfoenix.controls.JFXSlider;
 import com.zynoz.controller.MediaAPI;
 import com.zynoz.model.Song;
 import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
 
 public class VolumeHBox extends HBox {
-    private Slider volumeSlider;
+    private JFXSlider volumeSlider;
     private Label volume = new Label("Volume");
 
     private RootBorderPane rootBorderPane;
@@ -23,7 +23,7 @@ public class VolumeHBox extends HBox {
     }
 
     private void initComponents() {
-        volumeSlider = new Slider();
+        volumeSlider = new JFXSlider();
         volumeSlider.setValue(100);
     }
 

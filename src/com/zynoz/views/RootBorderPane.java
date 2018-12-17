@@ -10,8 +10,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.layout.BorderPane;
 
-import java.lang.reflect.InvocationTargetException;
-
 public class RootBorderPane extends BorderPane {
     private MenuBar menuBar;
     private Menu mFile, mEdit, mHelp;
@@ -64,18 +62,7 @@ public class RootBorderPane extends BorderPane {
             songOverview.setSongs();
         });
         miSettings.setOnAction(event -> {
-//            Settings settings = new Settings(this, mediaAPI);
-//            Scene scene = new Scene(settings);
-//            Stage stage = new Stage();
-//            settings.setStage(stage);
-//            stage.setResizable(false);
-//            stage.setScene(scene);
-//            stage.show();
-            try {
-                Util.open(Settings.class, this, mediaAPI, null);
-            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
-                e.printStackTrace();
-            }
+            Util.openSettings(this, mediaAPI);
         });
     }
 

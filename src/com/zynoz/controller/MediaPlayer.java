@@ -116,18 +116,18 @@ public final class MediaPlayer  {
         return playSong(songs.get(rng));
     }
 
-    public void play() {
+    public void playPause() {
         if (fxPlayer != null) {
-            fxPlayer.play();
-            isPlaying = true;
+            if (isPlaying) {
+                fxPlayer.pause();
+                isPlaying = false;
+            } else {
+                fxPlayer.play();
+                isPlaying = true;
+            }
         } else {
             Main.alert("Error", "No song selected.");
         }
-    }
-
-    public void pause() {
-        fxPlayer.pause();
-        isPlaying = false;
     }
 
     public javafx.scene.media.MediaPlayer getFxPlayer() {

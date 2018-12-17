@@ -54,10 +54,8 @@ public class MediaManager {
        } else {
            String path = dir.getPath();
            if (path.endsWith(".mp3")) {
-               //System.out.println("path old: " + path);
                path = path.replace("\\", "/");
                System.out.println("path new: " + path);
-
                mp3paths.add(path);
            }
        }

@@ -1,5 +1,6 @@
 package com.zynoz.views;
 
+import com.jfoenix.controls.JFXSlider;
 import com.zynoz.controller.MediaAPI;
 import com.zynoz.model.Song;
 import javafx.scene.control.Label;
@@ -7,7 +8,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
 
 public class TimeHBox extends HBox {
-    private Slider timeSlider;
+    private JFXSlider timeSlider;
     private Label time = new Label("00:00");
 
     private RootBorderPane rootBorderPane;
@@ -24,7 +25,7 @@ public class TimeHBox extends HBox {
     }
 
     private void initComponents() {
-        timeSlider = new Slider();
+        timeSlider = new JFXSlider();
     }
 
     private void addComponents() {

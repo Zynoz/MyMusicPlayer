@@ -30,7 +30,6 @@ public class SongOverview extends TableView<Song> {
         addComponents();
         setFactories();
         setupListeners();
-
     }
 
     private void initComponents() {
@@ -86,21 +85,22 @@ public class SongOverview extends TableView<Song> {
             Song song = getSelectionModel().getSelectedItem();
             mediaAPI.playSong(song);
             rootBorderPane.setSongInfos(song);
-            System.out.println("play song " + song.toString());
         });
         miEdit.setOnAction((ActionEvent event) -> {
             Song song = getSelectionModel().getSelectedItem();
-            Util.openEditDialogue(rootBorderPane, mediaAPI, song);
+            Util.openEdit(rootBorderPane, mediaAPI, song);
+            setSongs();
         });
         miRemove.setOnAction((ActionEvent event) -> {
             Song song = getSelectionModel().getSelectedItem();
             mediaAPI.removeSong(song);
-            System.out.println("remove song " + song.toString());
+            setSongs();
         });
         miDelete.setOnAction((ActionEvent event) -> {
             Song song = getSelectionModel().getSelectedItem();
             mediaAPI.deleteSong(song);
-            System.out.println("delete song " + song.toString());
+            mediaAPI.reload();
+            setSongs();
         });
     }
 

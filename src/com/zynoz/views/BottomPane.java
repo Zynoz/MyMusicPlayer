@@ -49,7 +49,7 @@ public class BottomPane extends HBox {
 //                    mediaPlayer = mediaAPI.playRandomSong();
 //                    atEndOfMedia = false;
 //                }
-//                mediaPlayer.play();
+//                mediaPlayer.playPause();
 //            } else {
 //                mediaPlayer.pause();
 //            }

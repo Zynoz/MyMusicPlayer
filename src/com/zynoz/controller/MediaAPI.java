@@ -34,12 +34,8 @@ public class MediaAPI {
         return mediaPlayer.isPlaying();
     }
 
-    public void play() {
-        mediaPlayer.play();
-    }
-
-    public void pause() {
-        mediaPlayer.pause();
+    public void playPause() {
+        mediaPlayer.playPause();
     }
 
     public Song getCurrentSong() {

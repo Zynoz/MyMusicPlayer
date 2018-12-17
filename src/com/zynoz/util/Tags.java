@@ -42,7 +42,7 @@ public class Tags {
                 }
                 Artwork artwork = mp3File.getTag().getFirstArtwork();
                 return artwork == null ? null : (BufferedImage) artwork.getImage();
-            } catch (CannotReadException | IOException | org.jaudiotagger.tag.TagException | ReadOnlyFileException | InvalidAudioFrameException e) {
+            } catch (Exception e) {
                 Main.alert(e.getCause().toString(), e.getMessage());
                 return null;
             }

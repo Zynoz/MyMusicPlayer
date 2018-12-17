@@ -1,14 +1,14 @@
 package com.zynoz.views;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
 import com.zynoz.Main;
 import com.zynoz.controller.MediaAPI;
 import com.zynoz.model.Song;
 import com.zynoz.util.Tags;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -26,8 +26,8 @@ import java.net.URL;
 public class EditGridPane extends GridPane {
     private Label title, artist;
     private ImageView artcover;
-    private TextField textTitle, textArtist;
-    private Button ok, cancel;
+    private JFXTextField textTitle, textArtist;
+    private JFXButton ok, cancel;
 
     private URL resource = getClass().getResource("../resources/images/default.png");
     private File selectedFile;
@@ -64,10 +64,10 @@ public class EditGridPane extends GridPane {
         System.out.println();
         artcover.setFitHeight(50);
         artcover.setFitWidth(50);
-        textTitle = new TextField(songToEdit.getSongName());
-        textArtist   = new TextField(songToEdit.getSongArtist());
-        ok = new Button("Save");
-        cancel = new Button("Cancel");
+        textTitle = new JFXTextField(songToEdit.getSongName());
+        textArtist   = new JFXTextField(songToEdit.getSongArtist());
+        ok = new JFXButton("Save".toUpperCase());
+        cancel = new JFXButton("Cancel".toUpperCase());
     }
 
     private void addComponents() {

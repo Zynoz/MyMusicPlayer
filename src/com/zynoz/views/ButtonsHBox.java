@@ -1,9 +1,9 @@
 package com.zynoz.views;
 
+import com.jfoenix.controls.JFXButton;
 import com.zynoz.controller.MediaAPI;
 import com.zynoz.model.Song;
 import com.zynoz.util.Util;
-import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 
 public class ButtonsHBox extends HBox {
@@ -11,7 +11,7 @@ public class ButtonsHBox extends HBox {
     private MediaAPI mediaAPI;
     private Song song;
 
-    private Button playPause, next, edit;
+    private JFXButton playPause, next, edit;
 
     public ButtonsHBox(RootBorderPane rootBorderPane, MediaAPI mediaAPI) {
         this.rootBorderPane = rootBorderPane;
@@ -26,22 +26,26 @@ public class ButtonsHBox extends HBox {
             mediaAPI.playRandomSong();
             rootBorderPane.setSongInfos(mediaAPI.getCurrentSong());
         });
-        edit.setOnAction(event -> Util.openEditDialogue(rootBorderPane, mediaAPI, song));
+        edit.setOnAction(event -> Util.openEdit(rootBorderPane, mediaAPI, song));
         playPause.setOnAction(event -> {
-            if (mediaAPI.isPlaying()) {
-                playPause.setText(">");
-                mediaAPI.pause();
-            } else {
-                playPause.setText("||");
-                mediaAPI.play();
-            }
+            playPause();
         });
     }
 
+    public void playPause() {
+        if (mediaAPI.isPlaying()) {
+            playPause.setText(">");
+            mediaAPI.playPause();
+        } else {
+            playPause.setText("||");
+            mediaAPI.playPause();
+        }
+    }
+
     private void initComponents() {
-        playPause = new Button("||");
-        next = new Button("Next");
-        edit = new Button("Edit Song");
+        playPause = new JFXButton("||");
+        next = new JFXButton("Next");
+        edit = new JFXButton("Edit Song");
     }
 
     private void addComponents() {

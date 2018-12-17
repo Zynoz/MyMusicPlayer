@@ -74,4 +74,8 @@ public class RightVBox extends VBox {
     public TimeHBox getTimeHBox() {
         return timeHBox;
     }
+
+    public ButtonsHBox getButtonsHBox() {
+        return buttonsHBox;
+    }
 }
