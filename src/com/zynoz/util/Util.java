@@ -10,6 +10,8 @@ import com.zynoz.views.RootBorderPane;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileReader;
@@ -31,6 +33,8 @@ public class Util {
         }));
     }
 
+    @NotNull
+    @Contract(" -> new")
     private static File getUserDir() {
         return new File(System.getProperty("user.home") + File.separator + ".mmp" + File.separator);
     }
