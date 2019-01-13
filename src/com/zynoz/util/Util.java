@@ -1,7 +1,7 @@
 package com.zynoz.util;
 
 import com.zynoz.controller.MediaAPI;
-import com.zynoz.exception.CommonException;
+import com.zynoz.exception.DefaultException;
 import com.zynoz.model.Song;
 import com.zynoz.server.Server;
 import com.zynoz.views.BaseSettings;
@@ -28,8 +28,9 @@ public class Util {
     static {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             System.out.println("Stop");
-            //noinspection deprecation
-            t.stop();
+            if (t != null) {
+                t.stop();
+            }
         }));
     }
 
@@ -107,7 +108,7 @@ public class Util {
         }
     }
 
-    public static void createProperties() throws CommonException {
+    public static void createProperties() throws DefaultException {
         Properties properties = new Properties();
 
         //TODO set properties accordingly.
@@ -119,11 +120,11 @@ public class Util {
             properties.store(fileWriter, "MMP config");
             fileWriter.close();
         } catch (IOException e) {
-            throw new CommonException(e.getClass() + ": " + e.getMessage());
+            throw new DefaultException(e.getClass() + ": " + e.getMessage());
         }
     }
 
-    public static void loadProperties() throws CommonException {
+    public static void loadProperties() throws DefaultException {
         try {
             FileReader fileReader = new FileReader(configFile);
 
@@ -136,7 +137,7 @@ public class Util {
             fileReader.close();
 
         } catch (IOException e) {
-            throw new CommonException(e.getClass() + ": " + e.getMessage());
+            throw new DefaultException(e.getClass() + ": " + e.getMessage());
         }
     }
 

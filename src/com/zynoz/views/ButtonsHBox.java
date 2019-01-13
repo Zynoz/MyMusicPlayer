@@ -37,9 +37,7 @@ public class ButtonsHBox extends HBox {
             rootBorderPane.setSongInfos(mediaAPI.getCurrentSong());
         });
         edit.setOnAction(event -> Util.openEdit(rootBorderPane, mediaAPI, song));
-        playPause.setOnAction(event -> {
-            playPause();
-        });
+        playPause.setOnAction(event -> playPause());
     }
 
     public void playPause() {

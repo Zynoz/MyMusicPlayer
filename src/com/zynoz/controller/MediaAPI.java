@@ -110,4 +110,12 @@ public class MediaAPI {
     public Duration getDuration() {
         return mediaPlayer.getDuration();
     }
+
+    public void setPrevSong(Song song) {
+        mediaManager.setPrevSong(song);
+    }
+
+    public Song getPrevSong() {
+        return mediaManager.getPrevSong();
+    }
 }

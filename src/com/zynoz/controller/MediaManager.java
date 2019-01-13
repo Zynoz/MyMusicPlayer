@@ -16,6 +16,7 @@ public class MediaManager {
     private static MediaManager instance;
 
     private ObservableList<Song> songs;
+    private Song prevSong;
     private List<String> mp3paths = new ArrayList<>();
 
     private MediaManager() {
@@ -89,5 +90,13 @@ public class MediaManager {
 
     public boolean addSong(final Song song) {
         return songs.add(song);
+    }
+
+    public void setPrevSong(Song song) {
+        prevSong = song;
+    }
+
+    public Song getPrevSong() {
+        return prevSong;
     }
 }

@@ -18,8 +18,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.jaudiotagger.tag.FieldKey;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URL;
 
@@ -108,7 +106,6 @@ public class EditGridPane extends GridPane {
                 Tags.set(songToEdit, FieldKey.ARTIST, textArtist.getText());
                 if (selectedFile != null) {
                     try {
-                        BufferedImage bufferedImage = ImageIO.read(selectedFile);
                         Tags.setCover(songToEdit, selectedFile);
                     } catch (Exception e) {
                         Main.alert(e.getClass().toString(), e.getMessage());
