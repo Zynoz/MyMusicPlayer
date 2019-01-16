@@ -39,6 +39,12 @@ public class RemoteGrid extends GridPane {
         add(portInput, 1, 0);
         add(startUp, 0, 1);
         add(startServer, 1, 1);
+
+        if (Util.isStartServerAtStartUp()) {
+            startUp.setSelected(true);
+            startServer.setDisable(true);
+            Util.startServer(rootBorderPane, mediaAPI);
+        }
     }
 
     private void addListeners() {
@@ -46,6 +52,7 @@ public class RemoteGrid extends GridPane {
             if (!portInput.getText().equals("") || !portInput.getText().isEmpty()) {
                 System.out.println(portInput.getText());
                 Util.setPort(portInput.getText());
+                Util.setStartServerAtStartUp(true);
                 Util.startServer(rootBorderPane, mediaAPI);
                 startServer.setText("Server already running");
                 startServer.setDisable(true);

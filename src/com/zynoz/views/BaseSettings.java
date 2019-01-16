@@ -6,7 +6,6 @@ import javafx.stage.Stage;
 
 public class BaseSettings extends TabPane {
 
-    private MenuBox menus;
     private RemoteTab serverOptions;
 
     private RootBorderPane rootBorderPane;
@@ -21,13 +20,12 @@ public class BaseSettings extends TabPane {
     }
 
     private void initComponents() {
-        menus = new MenuBox(rootBorderPane, mediaAPI);
         serverOptions = new RemoteTab(rootBorderPane, mediaAPI);
         setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
     }
 
     private void addComponents() {
-        getTabs().addAll(menus, serverOptions);
+        getTabs().addAll(serverOptions);
     }
 
     public void setStage(Stage stage) {

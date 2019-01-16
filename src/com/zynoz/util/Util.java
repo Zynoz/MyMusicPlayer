@@ -1,5 +1,6 @@
 package com.zynoz.util;
 
+import com.zynoz.Main;
 import com.zynoz.controller.MediaAPI;
 import com.zynoz.exception.DefaultException;
 import com.zynoz.model.Song;
@@ -22,14 +23,21 @@ import java.util.Random;
 
 public class Util {
     private static final File configFile = new File(getUserDir() + "cfg.properties");
-    private int port;
     private static Thread t;
+
+    private static int port = 6666;
+    private static boolean startServerAtStartUp = false;
 
     static {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             System.out.println("Stop");
             if (t != null) {
                 t.stop();
+            }
+            try {
+                saveProperties();
+            } catch (DefaultException e) {
+                Main.alert(e.getClass().toString(), e.getMessage());
             }
         }));
     }
@@ -108,23 +116,29 @@ public class Util {
         }
     }
 
-    public static void createProperties() throws DefaultException {
-        Properties properties = new Properties();
+    @SuppressWarnings("Duplicates")
+    public static void createProperties(boolean reset) throws DefaultException {
+        //TODO implement reset functionality.
+        if (!loadProperties()) {
+            Properties properties = new Properties();
 
-        //TODO set properties accordingly.
-        properties.setProperty("defaultPort", "6666");
-        properties.setProperty("port", getPort());
+            //TODO set properties accordingly.
+            properties.setProperty("port", "6666");
+            properties.setProperty("startServer", String.valueOf(false));
 
-        try {
-            FileWriter fileWriter = new FileWriter(configFile);
-            properties.store(fileWriter, "MMP config");
-            fileWriter.close();
-        } catch (IOException e) {
-            throw new DefaultException(e.getClass() + ": " + e.getMessage());
+            try {
+                FileWriter fileWriter = new FileWriter(configFile);
+                properties.store(fileWriter, "MMP config");
+                fileWriter.close();
+            } catch (IOException e) {
+                throw new DefaultException(e.getClass() + ": " + e.getMessage());
+            }
+            System.out.println("properties created");
+            loadProperties();
         }
     }
 
-    public static void loadProperties() throws DefaultException {
+    public static boolean loadProperties() throws DefaultException {
         try {
             FileReader fileReader = new FileReader(configFile);
 
@@ -133,24 +147,50 @@ public class Util {
 
             //TODO load properties accordingly.
             setPort(properties.getProperty("port"));
-
+            setStartServerAtStartUp(Boolean.parseBoolean(properties.getProperty("startServer")));
             fileReader.close();
+            System.out.println("properties loaded");
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
 
+    public static void saveProperties() throws DefaultException {
+        try {
+            FileWriter fileWriter = new FileWriter(configFile);
+            Properties properties = new Properties();
+
+            properties.setProperty("port", getPort());
+            properties.setProperty("startServer", String.valueOf(isStartServerAtStartUp()));
+
+            properties.store(fileWriter, "MMP config");
+            System.out.println("properties saved");
         } catch (IOException e) {
             throw new DefaultException(e.getClass() + ": " + e.getMessage());
         }
     }
-
     public static void startServer(RootBorderPane rootBorderPane, MediaAPI mediaAPI) {
-        t = new Thread(() -> new Server(rootBorderPane, mediaAPI, Integer.valueOf(getPort())));
-        t.start();
+        if (t != null) {
+            t = new Thread(() -> new Server(rootBorderPane, mediaAPI, Integer.valueOf(getPort())));
+            t.start();
+            System.out.println("server started");
+        }
     }
 
     public static String getPort() {
-        return "6666";
+        return String.valueOf(port);
     }
 
-    public static void setPort(String text) {
+    public static void setPort(String port) {
+        Util.port = Integer.valueOf(port);
+    }
 
+    public static boolean isStartServerAtStartUp() {
+        return startServerAtStartUp;
+    }
+
+    public static void setStartServerAtStartUp(boolean startServerAtStartUp) {
+        Util.startServerAtStartUp = startServerAtStartUp;
     }
 }

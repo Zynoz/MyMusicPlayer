@@ -1,6 +1,8 @@
 package com.zynoz.views;
 
+import com.zynoz.Main;
 import com.zynoz.controller.MediaAPI;
+import com.zynoz.exception.DefaultException;
 import com.zynoz.model.Song;
 import com.zynoz.util.Util;
 import javafx.application.Platform;
@@ -25,6 +27,12 @@ public class RootBorderPane extends BorderPane {
         addComponents();
         addListeners();
         mediaAPI.setRootBorderPane(this);
+        try {
+            Util.createProperties(false);
+            Util.loadProperties();
+        } catch (DefaultException e) {
+            Main.alert(e.getClass().toString(), e.getMessage());
+        }
     }
 
     private void initComponents() {
