@@ -12,7 +12,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 
-
 public class SongOverview extends TableView<Song> {
     private TableColumn<Song, String> title, artist;
 
@@ -79,7 +78,6 @@ public class SongOverview extends TableView<Song> {
                 rootBorderPane.setSongInfos(getSelectionModel().getSelectedItem());
             }
         });
-
 
         miPlay.setOnAction((ActionEvent event) -> {
             Song song = getSelectionModel().getSelectedItem();
